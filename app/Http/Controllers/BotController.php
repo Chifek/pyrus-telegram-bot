@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Client;
 use Illuminate\Http\Request;
+use Longman\TelegramBot\Entities\Update;
 use Longman\TelegramBot\Telegram;
 use Longman\TelegramBot\Exception\TelegramException;
 use Longman\TelegramBot\Request as TelegramRequest;
@@ -23,7 +25,6 @@ class BotController extends Controller
     {
         $bot_api_key  = '817087292:AAGCA9jQpZaFGkTedtpM50m9yBjXs-F4hQw';
         $bot_username = '@InionBot';
-        $chat_id = $request->post('chat_id');
 
         try {
             $telegram = new Telegram($bot_api_key, $bot_username);
@@ -31,11 +32,15 @@ class BotController extends Controller
             // Handle telegram webhook request
             $telegram->handle();
 
+            $update = new Update(file_get_contents('php://input'));
+            $message = $update->getMessage();
+
+            // Reply to the message
+            $text = $message->getText();
+            $chat_id = $message->getChat()->getId();
+            TelegramRequest::sendMessage(['chat_id' => $chat_id, 'text' => $text]);
+
             // todo search task id for client and send comment to task
-            $result = TelegramRequest::sendMessage([
-                'chat_id' => $chat_id,
-                'text'    => 'Your utf8 text 😜 ...',
-            ]);
         } catch (TelegramException $e) {
             // Silence is golden!
             // log telegram errors
