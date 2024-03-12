@@ -34,7 +34,9 @@ class BotController extends Controller
             $telegram->handle();
 
             $updates = $telegram->useGetUpdatesWithoutDatabase();
-            Log::error('updates' . var_export($updates, true));
+            Log::error('updates' . var_export($updates->getLastUpdateId(), true));
+            Log::error('updates' . var_export($updates->getBotId(), true));
+            Log::error('updates' . var_export($updates->getBotUsername(), true));
 
         } catch (TelegramException $e) {
             Log::error('telegram error '. $e->getMessage());
