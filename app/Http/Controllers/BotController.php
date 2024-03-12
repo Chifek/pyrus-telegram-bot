@@ -49,7 +49,7 @@ class BotController extends Controller
         } catch (TelegramException $e) {
             // Silence is golden!
             // log telegram errors
-             echo $e->getMessage();
+            Log::error('Telegram error: '. $e->getMessage());
         }
 
         // $request->post('event');
