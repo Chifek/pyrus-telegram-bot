@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Longman\TelegramBot\Entities\Update;
 use Longman\TelegramBot\Exception\TelegramException;
 use Longman\TelegramBot\Request as RequestTelegram;
 use Longman\TelegramBot\Telegram;
@@ -33,10 +34,19 @@ class BotController extends Controller
             // Handle telegram webhook request
             $telegram->handle();
 
-            $updates = $telegram->useGetUpdatesWithoutDatabase();
-            Log::error('updates' . var_export($updates->getLastUpdateId(), true));
-            Log::error('updates' . var_export($updates->getBotId(), true));
-            Log::error('updates' . var_export($updates->getBotUsername(), true));
+            $telegram->setUpdateFilter(function (Update $update, Telegram $telegram, &$reason = 'Update denied by update_filter') {
+                $user_id = $update->getMessage()->getFrom()->getId();
+                RequestTelegram::sendMessage([
+                    'chat_id' => $user_id,
+                    'text'    => 'Your utf8 text 😜 ...',
+                ]);
+            });
+
+//            $updates = $telegram->useGetUpdatesWithoutDatabase();
+//            Log::error('updates' . var_export($updates->getLastUpdateId(), true));
+//            Log::error('updates' . var_export($updates->getBotId(), true));
+//            Log::error('updates' . var_export($updates->getBotUsername(), true));
+//            Log::error('updates' . var_export($updates->get(), true));
 
         } catch (TelegramException $e) {
             Log::error('telegram error '. $e->getMessage());
