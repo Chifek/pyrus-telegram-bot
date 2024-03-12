@@ -25,7 +25,7 @@ class BotController extends Controller
 
     public function webhook(Request $request): void
     {
-        Log::error('Showing user: ', var_export($_POST, true));
+        Log::error('Showing user: '. var_export($_POST, true));
 
         $bot_api_key  = '817087292:AAGCA9jQpZaFGkTedtpM50m9yBjXs-F4hQw';
         $bot_username = 'InionBot';
