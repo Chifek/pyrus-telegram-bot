@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Longman\TelegramBot\Entities\Update;
 use Longman\TelegramBot\Telegram;
 use Longman\TelegramBot\Exception\TelegramException;
@@ -24,6 +25,8 @@ class BotController extends Controller
 
     public function webhook(Request $request): void
     {
+        Log::error('Showing user: ', var_export($_POST, true));
+
         $bot_api_key  = '817087292:AAGCA9jQpZaFGkTedtpM50m9yBjXs-F4hQw';
         $bot_username = 'InionBot';
 
