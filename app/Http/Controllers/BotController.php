@@ -45,6 +45,8 @@ class BotController extends Controller
                     'chat_id' => $chat_id,
                     'text'    => 'Your utf8 text 😜 ...',
                 ]);
+
+                return true;
             });
 
 //            $updates = $telegram->useGetUpdatesWithoutDatabase();
