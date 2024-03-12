@@ -37,7 +37,7 @@ class BotController extends Controller
             // Handle telegram webhook request
             $telegram->handle();
 
-            $update = new Update(file_get_contents('php://input'));
+            $update = new Update([file_get_contents('php://input')]);
             $message = $update->getMessage();
 
             // Reply to the message
