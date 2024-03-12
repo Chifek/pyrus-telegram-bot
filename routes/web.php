@@ -19,3 +19,5 @@ $router->post('/', function () use ($router) {
 });
 
 $router->post('/pyrus-webhook', 'PyrusController@webhook');
+
+$router->post('/bot-webhook', 'BotController@webhook');
