@@ -8,6 +8,7 @@ use Longman\TelegramBot\Entities\Update;
 use Longman\TelegramBot\Telegram;
 use Longman\TelegramBot\Exception\TelegramException;
 use Longman\TelegramBot\Request as TelegramRequest;
+use Longman\TelegramBot\TelegramLog;
 
 class BotController extends Controller
 {
@@ -21,10 +22,10 @@ class BotController extends Controller
         //
     }
 
-    public function webhook(Request $request)
+    public function webhook(Request $request): void
     {
         $bot_api_key  = '817087292:AAGCA9jQpZaFGkTedtpM50m9yBjXs-F4hQw';
-        $bot_username = '@InionBot';
+        $bot_username = 'InionBot';
 
         try {
             $telegram = new Telegram($bot_api_key, $bot_username);
@@ -32,19 +33,19 @@ class BotController extends Controller
             // Handle telegram webhook request
             $telegram->handle();
 
-            $update = new Update(file_get_contents('php://input'));
+            /*$update = new Update(file_get_contents('php://input'));
             $message = $update->getMessage();
 
             // Reply to the message
             $text = $message->getText();
             $chat_id = $message->getChat()->getId();
-            TelegramRequest::sendMessage(['chat_id' => $chat_id, 'text' => $text]);
+            TelegramRequest::sendMessage(['chat_id' => $chat_id, 'text' => $text]);*/
 
             // todo search task id for client and send comment to task
         } catch (TelegramException $e) {
             // Silence is golden!
             // log telegram errors
-            // echo $e->getMessage();
+             echo $e->getMessage();
         }
 
         // $request->post('event');
