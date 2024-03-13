@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Longman\TelegramBot\Entities\Update;
 use Longman\TelegramBot\Exception\TelegramException;
@@ -39,12 +40,14 @@ class BotController extends Controller
                 $chat_id = $update->getMessage()->getChat()->getId();
                 $user_id = $update->getMessage()->getFrom()->getId();
 
+                // todo check if task exists
+
                 Log::error('chat_id' . $chat_id);
                 Log::error('user_id' . $user_id);
 
                 RequestTelegram::sendMessage([
                     'chat_id' => $chat_id,
-                    'text'    => "Your chat id {$chat_id}, your telegram user id {$user_id}",
+                    'text' => "Your chat id {$chat_id}, your telegram user id {$user_id}",
                 ]);
 
                 return true;
@@ -59,8 +62,20 @@ class BotController extends Controller
 //            Log::error('updates' . var_export($updates->get(), true));
 
         } catch (TelegramException $e) {
-            Log::error('telegram error '. $e->getMessage());
+            Log::error('telegram error ' . $e->getMessage());
         }
+    }
+
+    public function auth()
+    {
+        // auth
+        $response = Http::post('https://accounts.pyrus.com/api/v4/auth', [
+            'login' => 'bot@76e8eb9a-5b57-4040-b6cb-5b014123c357',
+            'security_key' => '-GlbXSHyTa2zLiuq2-67fq1AFOwWxvyIWlOS5dWEn9nkU4HejzYHUbfsck7isb6IJGGLxgI4LQsyq0oI8YbBtSSeJkLTj4kc',
+        ]);
+
+        var_export($response);
+
     }
 }
 
