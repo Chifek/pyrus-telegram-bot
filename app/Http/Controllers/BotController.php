@@ -74,17 +74,34 @@ class BotController extends Controller
             'security_key' => '-GlbXSHyTa2zLiuq2-67fq1AFOwWxvyIWlOS5dWEn9nkU4HejzYHUbfsck7isb6IJGGLxgI4LQsyq0oI8YbBtSSeJkLTj4kc',
         ]);
         $jsonResponse = json_decode($response->body(), true, 5, JSON_PRETTY_PRINT);
+        $token = $jsonResponse['access_token'];
+        $apiUrl = $jsonResponse['api_url'];
 
         echo '<pre>';
         var_export($jsonResponse);
 
-        $response = Http::withToken($jsonResponse['access_token'])->get($jsonResponse['api_url'] . 'forms');
+        $response = Http::withToken($token)->get($apiUrl . 'forms');
         var_export($response->clientError());
         var_export($response->status());
         var_export($response->body());
 
         $jsonResponse = json_decode($response->body(), true, 10, JSON_PRETTY_PRINT);
         var_export($jsonResponse);
+
+        // create task
+        $response = Http::withToken($token)->post($apiUrl . 'tasks', [
+            'form_id' => 1418269, // from get /forms
+            'fields' => [
+                [
+                    'id' => 3,
+                    'value' => 'Test problem'
+                ]
+            ]
+        ]);
+        var_export($response->clientError());
+        var_export($response->status());
+        var_export($response->body());
+
     }
 }
 
