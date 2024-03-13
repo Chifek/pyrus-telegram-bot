@@ -74,7 +74,7 @@ class BotController extends Controller
             'security_key' => '-GlbXSHyTa2zLiuq2-67fq1AFOwWxvyIWlOS5dWEn9nkU4HejzYHUbfsck7isb6IJGGLxgI4LQsyq0oI8YbBtSSeJkLTj4kc',
         ]);
 
-        $jsonResponse = json_encode($response->body(), true);
+        $jsonResponse = json_decode($response->body(), true);
 
         var_export(
             $jsonResponse
