@@ -79,6 +79,8 @@ class BotController extends Controller
         var_export($jsonResponse);
 
         $response = Http::withToken($jsonResponse['access_token'])->get($jsonResponse['api_url'] . 'forms');
+        var_export($response->clientError());
+        var_export($response->status());
 
         $jsonResponse = json_decode($response->body(), true, 5, JSON_PRETTY_PRINT);
         var_export($jsonResponse);
