@@ -73,18 +73,14 @@ class BotController extends Controller
             'login' => 'bot@76e8eb9a-5b57-4040-b6cb-5b014123c357',
             'security_key' => '-GlbXSHyTa2zLiuq2-67fq1AFOwWxvyIWlOS5dWEn9nkU4HejzYHUbfsck7isb6IJGGLxgI4LQsyq0oI8YbBtSSeJkLTj4kc',
         ]);
-
         $jsonResponse = json_decode($response->body(), true, 5, JSON_PRETTY_PRINT);
 
         echo '<pre>';
-        var_export(
-            $jsonResponse
-        );
+        var_export($jsonResponse);
 
-        $response = Http::withToken($jsonResponse['access_token'])->get('https://api.pyrus.com/v4/forms');
+        $response = Http::withToken($jsonResponse['access_token'])->get($jsonResponse['api_url'] . 'forms');
 
         $jsonResponse = json_decode($response->body(), true, 5, JSON_PRETTY_PRINT);
-
         var_export($jsonResponse);
     }
 }
