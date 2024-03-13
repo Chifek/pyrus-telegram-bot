@@ -80,6 +80,12 @@ class BotController extends Controller
             $jsonResponse
         );
 
+        $response = Http::get('https://api.pyrus.com/v4/forms');
+        Http::withToken($jsonResponse['access_token']);
+
+        $jsonResponse = json_decode($response->body(), true);
+
+        var_export($jsonResponse);
     }
 }
 
