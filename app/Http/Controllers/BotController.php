@@ -32,7 +32,6 @@ class BotController extends Controller
             $telegram = new Telegram($bot_api_key, $bot_username);
 
             // Handle telegram webhook request
-            $telegram->handle();
 
             $telegram->setUpdateFilter(function (Update $update, Telegram $telegram, &$reason = 'Update denied by update_filter') {
                 Log::error('update filter');
@@ -48,6 +47,8 @@ class BotController extends Controller
 
                 return true;
             });
+
+            $telegram->handle();
 
 //            $updates = $telegram->useGetUpdatesWithoutDatabase();
 //            Log::error('updates' . var_export($updates->getLastUpdateId(), true));
