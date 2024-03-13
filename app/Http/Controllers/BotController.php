@@ -83,7 +83,7 @@ class BotController extends Controller
         var_export($response->status());
         var_export($response->body());
 
-        $jsonResponse = json_decode($response->body(), true, 5, JSON_PRETTY_PRINT);
+        $jsonResponse = json_decode($response->body(), true, 10, JSON_PRETTY_PRINT);
         var_export($jsonResponse);
     }
 }
