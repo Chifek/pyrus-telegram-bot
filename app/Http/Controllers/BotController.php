@@ -74,7 +74,7 @@ class BotController extends Controller
             'security_key' => '-GlbXSHyTa2zLiuq2-67fq1AFOwWxvyIWlOS5dWEn9nkU4HejzYHUbfsck7isb6IJGGLxgI4LQsyq0oI8YbBtSSeJkLTj4kc',
         ]);
 
-        var_export($response);
+        var_export($response->body());
 
     }
 }
