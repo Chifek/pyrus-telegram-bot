@@ -37,12 +37,14 @@ class BotController extends Controller
                 Log::error('update filter');
 
                 $chat_id = $update->getMessage()->getChat()->getId();
+                $user_id = $update->getMessage()->getFrom()->getId();
 
-                Log::error('update filter' . $chat_id);
+                Log::error('chat_id' . $chat_id);
+                Log::error('user_id' . $user_id);
 
                 RequestTelegram::sendMessage([
                     'chat_id' => $chat_id,
-                    'text'    => 'Your utf8 text 😜 ...',
+                    'text'    => "Your chat id {$chat_id}, your telegram user id {$user_id}",
                 ]);
 
                 return true;
