@@ -13,12 +13,9 @@
 |
 */
 
-use App\Http\Controllers\BotController;
-use App\Http\Controllers\PyrusController;
+$router->post('/pyrus-webhook', 'PyrusController@webhook');
+$router->get('/integration/auth', 'PyrusController@integrationAuth');
+$router->post('/authorize', 'PyrusController@auth');
 
-$router->post('/pyrus-webhook', [PyrusController::class, 'webhook']);
-$router->get('/integration/auth', [PyrusController::class, 'integrationAuth']);
-$router->post('/authorize', [PyrusController::class, 'auth']);
-
-$router->post('/bot-webhook', [BotController::class, 'webhook']);
-$router->get('/auth', [BotController::class, 'auth']);
+$router->post('/bot-webhook', 'BotController@webhook');
+$router->get('/auth', 'BotController@auth');
