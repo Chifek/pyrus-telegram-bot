@@ -53,6 +53,8 @@ class PyrusController extends Controller
         $state = $request->get('state');
         $token = '123';
 
+        Log::error('integration authorize' . $state);
+
         return redirect("https://pyrus.com/integrations/oauthorization?state={$state}&code={$token}");
     }
 
@@ -62,8 +64,8 @@ class PyrusController extends Controller
         return response()->json([
             "account_id" => "uniqueID12345",
             "account_name" => "Test account",
-            "access_token" => "dkfjvviUHMHkakchsb827KDndjg",
-            "refresh_token" => "UyebcyINsybd72Cbsj21KsAscn"
+            "access_token" => "123",
+            "refresh_token" => "321"
         ]);
     }
 }
