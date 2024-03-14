@@ -50,7 +50,7 @@ class PyrusController extends Controller
         return redirect("https://pyrus.com/integrations/oauthorization?state={$state}&code={$token}");
     }
 
-    public function authorize(Request $request): JsonResponse
+    public function pyrusAuthroize(Request $request): JsonResponse
     {
         Log::error('authorize', var_export($_POST, true));
         return response()->json([
