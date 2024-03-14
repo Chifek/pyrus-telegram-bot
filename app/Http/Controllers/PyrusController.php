@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Laravel\Lumen\Http\Redirector;
 use Longman\TelegramBot\Request as TelegramRequest;
 use Longman\TelegramBot\Telegram;
 
@@ -38,11 +40,11 @@ class PyrusController extends Controller
         // $request->post('task');
     }
 
-    public function auth(Request $request): void
+    public function auth(Request $request): RedirectResponse|Redirector
     {
         $state = $request->get('state');
         $token = '123';
 
-        redirect("https://pyrus.com/integrations/oauthorization?state={$state}&code={$token}");
+        return redirect("https://pyrus.com/integrations/oauthorization?state={$state}&code={$token}");
     }
 }
