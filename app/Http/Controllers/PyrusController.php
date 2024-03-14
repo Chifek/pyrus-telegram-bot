@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Laravel\Lumen\Http\Redirector;
 use Longman\TelegramBot\Request as TelegramRequest;
 use Longman\TelegramBot\Telegram;
@@ -46,5 +48,16 @@ class PyrusController extends Controller
         $token = '123';
 
         return redirect("https://pyrus.com/integrations/oauthorization?state={$state}&code={$token}");
+    }
+
+    public function authorize(Request $request): JsonResponse
+    {
+        Log::error('authorize', var_export($_POST, true));
+        return response()->json([
+            "account_id" => "uniqueID12345",
+            "account_name" => "Test account",
+            "access_token" => "dkfjvviUHMHkakchsb827KDndjg",
+            "refresh_token" => "UyebcyINsybd72Cbsj21KsAscn"
+        ]);
     }
 }
