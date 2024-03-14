@@ -66,7 +66,7 @@ class BotController extends Controller
         }
     }
 
-    public function auth()
+    public function auth(): void
     {
         // auth
         /*

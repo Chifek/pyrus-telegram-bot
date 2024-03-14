@@ -18,9 +18,9 @@ class PyrusController extends Controller
         //
     }
 
-    public function webhook(Request $request)
+    public function webhook(Request $request): void
     {
-        $bot_api_key  = '817087292:AAGCA9jQpZaFGkTedtpM50m9yBjXs-F4hQw';
+        $bot_api_key = '817087292:AAGCA9jQpZaFGkTedtpM50m9yBjXs-F4hQw';
         $bot_username = '@InionBot';
         $telegram = new Telegram($bot_api_key, $bot_username);
 
@@ -28,7 +28,7 @@ class PyrusController extends Controller
 
         $result = TelegramRequest::sendMessage([
             'chat_id' => $chat_id,
-            'text'    => 'Your utf8 text 😜 ...',
+            'text' => 'Your utf8 text 😜 ...',
         ]);
         // todo send message to telegram bot
         // $request->post('event');
@@ -37,5 +37,12 @@ class PyrusController extends Controller
         // $request->post('user_id');
         // $request->post('task');
     }
-    //
+
+    public function auth(Request $request): void
+    {
+        $state = $request->get('state');
+        $token = '123';
+
+        redirect("https://pyrus.com/integrations/oauthorization?state={$state}&code={$token}");
+    }
 }

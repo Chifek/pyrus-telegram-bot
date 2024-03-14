@@ -13,13 +13,8 @@
 |
 */
 
-$router->post('/', function () use ($router) {
-    file_put_contents('test.txt', $_POST);
-    return $router->app->version();
-});
-
 $router->post('/pyrus-webhook', 'PyrusController@webhook');
+$router->get('/integration/auth', 'PyrusController@auth');
 
 $router->post('/bot-webhook', 'BotController@webhook');
-
 $router->get('/auth', 'BotController@auth');
