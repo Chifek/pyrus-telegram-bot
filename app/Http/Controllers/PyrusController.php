@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use Laravel\Lumen\Http\Redirector;
 use Longman\TelegramBot\Request as TelegramRequest;
@@ -40,6 +41,11 @@ class PyrusController extends Controller
         // $request->post('task_id');
         // $request->post('user_id');
         // $request->post('task');
+    }
+
+    public function pulse(): Response
+    {
+        return response();
     }
 
     public function integrationAuth(Request $request): RedirectResponse|Redirector

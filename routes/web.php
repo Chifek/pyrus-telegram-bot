@@ -14,6 +14,7 @@
 */
 
 $router->post('/pyrus-webhook', 'PyrusController@webhook');
+$router->get('/pulse', 'PyrusController@pulse');
 $router->get('/integration/auth', 'PyrusController@integrationAuth');
 $router->post('/authorize', 'PyrusController@auth');
 
