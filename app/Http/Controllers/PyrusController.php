@@ -52,7 +52,7 @@ class PyrusController extends Controller
 
     public function pyrusAuthroize(Request $request): JsonResponse
     {
-        Log::error('authorize', var_export($_POST, true));
+        Log::error('authorize' . var_export($_POST, true));
         return response()->json([
             "account_id" => "uniqueID12345",
             "account_name" => "Test account",
