@@ -51,7 +51,7 @@ class PyrusController extends Controller
     public function integrationAuth(Request $request): RedirectResponse|Redirector
     {
         $state = $request->get('state');
-        $token = '123';
+        $token = '123456';
 
         Log::error('integration authorize' . $state);
 
@@ -63,11 +63,12 @@ class PyrusController extends Controller
         Log::error('authorize' . var_export($_POST, true));
         Log::error('authorize _ auth_code: ' . $request->post('authorization_code'));
         Log::error('authorize _ grant_type: ' . $request->post('grant_type'));
+
         return response()->json([
             "account_id" => "uniqueID12345",
             "account_name" => "Test account",
-            "access_token" => "123",
-            "refresh_token" => "321"
+            "access_token" => "123123",
+            "refresh_token" => "321321"
         ]);
     }
 }
