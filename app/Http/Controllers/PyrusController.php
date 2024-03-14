@@ -42,7 +42,7 @@ class PyrusController extends Controller
         // $request->post('task');
     }
 
-    public function auth(Request $request): RedirectResponse|Redirector
+    public function integrationAuth(Request $request): RedirectResponse|Redirector
     {
         $state = $request->get('state');
         $token = '123';
@@ -50,7 +50,7 @@ class PyrusController extends Controller
         return redirect("https://pyrus.com/integrations/oauthorization?state={$state}&code={$token}");
     }
 
-    public function pyrusAuthroize(Request $request): JsonResponse
+    public function auth(): JsonResponse
     {
         Log::error('authorize' . var_export($_POST, true));
         return response()->json([
