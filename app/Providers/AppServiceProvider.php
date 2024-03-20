@@ -17,7 +17,5 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(PyrusApiService::class, function ($app) {
             return new PyrusApiService();
         });
-
-        //
     }
 }

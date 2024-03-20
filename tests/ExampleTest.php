@@ -2,8 +2,7 @@
 
 namespace Tests;
 
-use Laravel\Lumen\Testing\DatabaseMigrations;
-use Laravel\Lumen\Testing\DatabaseTransactions;
+use App\Services\PyrusApiService;
 
 class ExampleTest extends TestCase
 {
@@ -14,10 +13,10 @@ class ExampleTest extends TestCase
      */
     public function test_that_base_endpoint_returns_a_successful_response()
     {
-        $this->get('/');
+        $pyrusApiService = new PyrusApiService();
 
-        $this->assertEquals(
-            $this->app->version(), $this->response->getContent()
-        );
+        $token = $pyrusApiService->token();
+
+        $this->assertGreaterThan(500, $token);
     }
 }

@@ -82,7 +82,7 @@ class PyrusController extends Controller
     // GET getavailablenumbers
     public function getAvailableNumbers(Request $request)
     {
-        Log::debug('Called GET getavailablenumbers', $request->get());
+        Log::debug('Called GET getavailablenumbers', $request->all());
     }
 
     // POST sendmessage
