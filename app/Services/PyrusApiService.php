@@ -24,6 +24,10 @@ class PyrusApiService
      */
     public function token(): string
     {
+        if ($this->token) {
+            return $this->token;
+        }
+
         $response = Http::post($this->baseUrl . '/token', [
             'client_id' => $this->clientId,
             'secret' => $this->secret,
@@ -57,7 +61,7 @@ class PyrusApiService
 
     public function task(int $telegramId, string $text): ?array
     {
-        return Http::post($this->baseUrl . '/task', [
+        return Http::withToken($this->token())->post($this->baseUrl . '/task', [
             'account_id' => $telegramId,
             'text' => $text,
         ])->json();

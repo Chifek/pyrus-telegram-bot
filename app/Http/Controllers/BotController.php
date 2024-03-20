@@ -34,8 +34,6 @@ class BotController extends Controller
             $telegram = new Telegram($this->botApiKey, $this->botUsername);
 
             $telegram->setUpdateFilter(function (Update $update, Telegram $telegram, &$reason = 'Update denied by update_filter') {
-                Log::error('update filter');
-
                 $chatId = $update->getMessage()->getFrom()->getId();
                 $text = $update->getMessage()->getText();
 
