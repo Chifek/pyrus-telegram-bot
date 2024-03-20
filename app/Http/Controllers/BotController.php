@@ -34,11 +34,13 @@ class BotController extends Controller
             $telegram = new Telegram($this->botApiKey, $this->botUsername);
 
             $telegram->setUpdateFilter(function (Update $update, Telegram $telegram, &$reason = 'Update denied by update_filter') {
-                $chatId = $update->getMessage()->getFrom()->getId();
+                $user = $update->getMessage()->getFrom();
+                $name = $user->getFirstName() . ' ' . $user->getLastName();
+                $chatId = $user->getId();
                 $text = $update->getMessage()->getText();
 
                 // todo check if the opened task already exist
-                $this->pyrusApiService->task($chatId, $text);
+                $this->pyrusApiService->task($chatId, $text, $name);
 
                 Log::debug('Telegram Webhook: ' . $chatId . ' / '. $text);
 

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class PyrusApiService
 {
@@ -24,7 +25,9 @@ class PyrusApiService
      */
     public function token(): string
     {
+        Log::debug('Request token');
         if ($this->token) {
+            Log::debug('Return saved token', $this->token);
             return $this->token;
         }
 
@@ -34,6 +37,7 @@ class PyrusApiService
         ]);
 
         $this->token = $response->json('access_token');
+        Log::debug('Return new token', $this->token);
 
         return $this->token;
     }
@@ -59,11 +63,21 @@ class PyrusApiService
 
     }
 
-    public function task(int $telegramId, string $text): ?array
+    public function task(int $telegramId, string $text, string $username): ?array
     {
         return Http::withToken($this->token())->post($this->baseUrl . '/task', [
             'account_id' => $telegramId,
             'text' => $text,
+            'mappings' => [
+                [
+                    'code' => 'SenderName',
+                    'value' => $username,
+                ],
+                [
+                    'code' => 'Message',
+                    'value' => $text
+                ]
+            ]
         ])->json();
     }
 }
