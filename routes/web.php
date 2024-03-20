@@ -17,6 +17,10 @@ $router->post('/pyrus-webhook', 'PyrusController@webhook');
 $router->get('/pulse', 'PyrusController@pulse');
 $router->get('/integration/auth', 'PyrusController@integrationAuth');
 $router->post('/authorize', 'PyrusController@authorizeConfirm');
+$router->post('/getavailablenumbers', 'PyrusController@getAvailableNumbers');
+$router->post('/sendmessage', 'PyrusController@sendMessage');
+$router->post('/toggle', 'PyrusController@toggle');
+$router->post('/event', 'PyrusController@event');
 
 $router->post('/bot-webhook', 'BotController@webhook');
 $router->get('/auth', 'BotController@auth');
