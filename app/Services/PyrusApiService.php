@@ -80,8 +80,8 @@ class PyrusApiService
             ]
         ]);
 
-        Log::debug('response /task status ', $response->status());
-        Log::debug('response /task json ', $response->json());
+        Log::debug('response /task status ', ['status' => $response->status()]);
+        Log::debug('response /task json ', ['json' => $response->json()]);
 
         return $response->json();
     }
