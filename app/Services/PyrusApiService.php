@@ -27,7 +27,7 @@ class PyrusApiService
     {
         Log::debug('Request token');
         if ($this->token) {
-            Log::debug('Return saved token', $this->token);
+            Log::debug('Return saved token', ['token' => $this->token]);
             return $this->token;
         }
 
@@ -37,7 +37,7 @@ class PyrusApiService
         ]);
 
         $this->token = $response->json('access_token');
-        Log::debug('Return new token', $this->token);
+        Log::debug('Return new token', ['token' => $this->token]);
 
         return $this->token;
     }
