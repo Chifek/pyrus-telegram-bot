@@ -65,7 +65,7 @@ class PyrusApiService
 
     public function task(int $telegramId, string $text, string $username): ?array
     {
-        return Http::withToken($this->token())->post($this->baseUrl . '/task', [
+        $response = Http::withToken($this->token())->post($this->baseUrl . '/task', [
             'account_id' => $telegramId,
             'text' => $text,
             'mappings' => [
@@ -78,6 +78,11 @@ class PyrusApiService
                     'value' => $text
                 ]
             ]
-        ])->json();
+        ]);
+
+        Log::debug('response /task status ', $response->status());
+        Log::debug('response /task json ', $response->json());
+
+        return $response->json();
     }
 }
