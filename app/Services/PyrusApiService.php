@@ -71,7 +71,8 @@ class PyrusApiService
             'username' => $username,
         ]);
         $response = Http::withToken($this->token())->post($this->baseUrl . '/task', [
-            'account_id' => (string)$telegramId,
+//            'account_id' => (string)$telegramId,
+            'account_id' => 'uniqueID12345',
             'text' => $text,
             'mappings' => [
                 [
