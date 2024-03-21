@@ -70,7 +70,8 @@ class PyrusApiService
             'text' => $text,
             'username' => $username,
         ]);
-        $response = Http::withToken($this->token())->post($this->baseUrl . '/task', [
+
+        $data = [
 //            'account_id' => (string)$telegramId,
             'account_id' => 'uniqueID12345',
             'text' => $text,
@@ -84,7 +85,10 @@ class PyrusApiService
                     'value' => $text
                 ]
             ]
-        ]);
+        ];
+        Log::debug('Call Pyrus task data', $data);
+
+        $response = Http::withToken($this->token())->post($this->baseUrl . '/task', $data);
 
         Log::debug('response /task status ', ['status' => $response->status()]);
         Log::debug('response /task json ', ['json' => $response->json()]);
