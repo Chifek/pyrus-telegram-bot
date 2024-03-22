@@ -81,8 +81,12 @@ class PyrusApiService
                     'value' => $username,
                 ],
                 [
-                    'code' => 'Message',
+                    'code' => 'Subject',
                     'value' => $text
+                ],
+                [
+                    'code' => 'TelegramId',
+                    'value' => $telegramId
                 ]
             ]
         ];
