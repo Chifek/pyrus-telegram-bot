@@ -87,6 +87,10 @@ class PyrusApiService
                 [
                     'code' => 'TelegramId',
                     'value' => $telegramId
+                ],
+                [
+                    'code' => 'telegram_id',
+                    'value' => $telegramId
                 ]
             ]
         ];
