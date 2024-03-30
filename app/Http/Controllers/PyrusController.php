@@ -76,12 +76,14 @@ class PyrusController extends Controller
         Log::debug('Called POST authorize', $request->post());
 
         // todo get token
+        $token = Crypt::encrypt(Crypt::generateKey('AES-128-CBC'));
+        $refresh_token = Crypt::encrypt(Crypt::generateKey('AES-128-CBC'));
 
         return response()->json([
-            "account_id" => "uniqueID12345",
-            "account_name" => "Test account",
-            "access_token" => "123123",
-            "refresh_token" => "321321"
+            "account_id" => env('APP_KEY'),
+            "account_name" => env('APP_NAME'),
+            "access_token" => $token,
+            "refresh_token" => $refresh_token // todo return refresh token
         ]);
     }
 
