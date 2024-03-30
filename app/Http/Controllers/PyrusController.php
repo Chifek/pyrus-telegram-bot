@@ -6,6 +6,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Laravel\Lumen\Http\Redirector;
 use Longman\TelegramBot\Exception\TelegramException;
@@ -51,16 +52,19 @@ class PyrusController extends Controller
     public function integrationAuth(Request $request): RedirectResponse|Redirector
     {
         $state = $request->get('state');
-        $token = '123456';
+        $token = Crypt::encrypt(Crypt::generateKey('AES-128-CBC') . $state);
 
-        Log::error('integration authorize' . $state);
+        Log::error('integration authorize ' . $state);
+        Log::error('integration authorize token ' . $token);
+
+        // todo save token
 
         return redirect("https://pyrus.com/integrations/oauthorization?state={$state}&code={$token}");
     }
 
     // callback pyrus methods:
     // GET pulse
-    public function pulse(Request $request): Response
+    public function pulse(): Response
     {
         Log::debug('Called GET pulse');
         return new Response();
@@ -70,6 +74,8 @@ class PyrusController extends Controller
     public function authorizeConfirm(Request $request): JsonResponse
     {
         Log::debug('Called POST authorize', $request->post());
+
+        // todo get token
 
         return response()->json([
             "account_id" => "uniqueID12345",
