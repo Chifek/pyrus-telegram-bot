@@ -88,8 +88,16 @@ class PyrusController extends Controller
         if ($integration) {
             $client_id = $request->post('client_id');
             $client_secret = $request->post('client_secret');
+            Log::debug('Called POST authorize found ', [$client_id, $client_secret]);
 
             if (env('APP_KEY') === $client_id && env('APP_SECRET') === $client_secret) {
+                Log::debug('Called POST authorize response ', [
+                    "account_id" => env('APP_KEY'),
+                    "account_name" => env('APP_NAME'),
+                    "access_token" => $token,
+                    "refresh_token" => $token // todo return refresh token
+                ]);
+
                 return response()->json([
                     "account_id" => env('APP_KEY'),
                     "account_name" => env('APP_NAME'),
