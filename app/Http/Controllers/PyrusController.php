@@ -49,9 +49,9 @@ class PyrusController extends Controller
         // $request->post('task');
     }
 
-    public function integrationAuth(Request $request): RedirectResponse|Redirector
+    public function integrationAuth(Request $request)
     {
-        Log::debug('Called integrationAuth', $request->post());
+        Log::debug('Called integrationAuth', $request->get());
 
         $state = $request->get('state');
         $formId = $state['formId'] ?? null;
@@ -61,7 +61,7 @@ class PyrusController extends Controller
             $token = $integration->getToken();
             return redirect("https://pyrus.com/integrations/oauthorization?state={$state}&code={$token}");
         }
-        return abort(403);
+        abort(403);
     }
 
     // callback pyrus methods:
@@ -73,7 +73,7 @@ class PyrusController extends Controller
     }
 
     // POST authorize
-    public function authorizeConfirm(Request $request): JsonResponse|Response
+    public function authorizeConfirm(Request $request)
     {
         Log::debug('Called POST authorize', $request->post());
         $token = $request->post('token');
@@ -91,7 +91,7 @@ class PyrusController extends Controller
                 ]);
             }
         }
-        return abort(403);
+        abort(403);
     }
 
     // GET getavailablenumbers
