@@ -83,11 +83,11 @@ class PyrusController extends Controller
     public function authorizeConfirm(Request $request)
     {
         Log::debug('Called POST authorize', $request->post());
-        $token = $request->post('token');
+        $token = $request->post('authorization_code');
         Log::debug('Called POST authorize token ', [$token]);
-        $token = $request->input('token');
+        $token = $request->input('authorization_code');
         Log::debug('Called POST authorize token2 ', [$token]);
-        $token = $request->json()->get('token');
+        $token = $request->json()->get('authorization_code');
         Log::debug('Called POST authorize token3 ', [$token]);
 
         $integration = Integration::where('token', $token)->firstOrFail();
