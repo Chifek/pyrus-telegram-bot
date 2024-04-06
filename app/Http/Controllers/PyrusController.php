@@ -121,7 +121,7 @@ class PyrusController extends Controller
         $account_id = $request->post('account_id');
         $access_token = $request->post('access_token');
 
-        Integration::where('id', $account_id)->where('token', $access_token)->update(['active' => $request->post('enabled', false)]);
+        Integration::where('id', $account_id)->where('token', $access_token)->update(['enabled' => $request->post('enabled', false)]);
     }
 
     // POST event
