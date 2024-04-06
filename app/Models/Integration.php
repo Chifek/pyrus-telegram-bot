@@ -24,10 +24,7 @@ class Integration extends Model
     protected $hidden = [
     ];
 
-    public function getToken($state): string {
-        if (empty($this->token)) {
-            $this->token = Crypt::encrypt(Crypt::generateKey('AES-128-CBC') . $state);
-        }
-        return $this->token;
+    public static function generateNewToken($formId): string {
+        return Crypt::encrypt(Crypt::generateKey('AES-128-CBC') . $formId);
     }
 }

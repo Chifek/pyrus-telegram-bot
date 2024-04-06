@@ -59,11 +59,14 @@ class PyrusController extends Controller
         Log::debug('Called integrationAuth state.formId', [$stateJson['formId']]);
         $formId = $stateJson['formId'] ?? null;
         if ($formId) {
-            $integration = Integration::where('form_id', $formId)
-                ->firstOr(fn () => Integration::create(['form_id' => $formId]));
+            $integration = Integration::where('form_id', $formId)->firstOr(function () use ($formId) {
+                Integration::create([
+                    'form_id' => $formId,
+                    'token' => Integration::generateNewToken($formId)
+                ]);
+            });
 
-            $token = $integration->getToken();
-            return redirect("https://pyrus.com/integrations/oauthorization?state={$state}&code={$token}");
+            return redirect("https://pyrus.com/integrations/oauthorization?state={$state}&code={$integration->token}");
         }
         abort(403);
     }
