@@ -60,7 +60,7 @@ class PyrusController extends Controller
         $formId = $stateJson['formId'] ?? null;
         if ($formId) {
             $integration = Integration::where('form_id', $formId)->firstOr(function () use ($formId) {
-                Integration::create([
+                return Integration::create([
                     'form_id' => $formId,
                     'token' => Integration::generateNewToken($formId)
                 ]);
