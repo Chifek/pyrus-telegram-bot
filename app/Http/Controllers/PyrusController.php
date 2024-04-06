@@ -91,10 +91,10 @@ class PyrusController extends Controller
             $client_secret = $request->post('client_secret');
             Log::debug('Called POST authorize found ', [
                 $client_id, $client_secret,
-                env('APP_KEY'), env('APP_SECRET')
+                env('APP_CLIENT_ID'), env('APP_SECRET')
             ]);
 
-            if (env('APP_KEY') === $client_id && env('APP_SECRET') === $client_secret) {
+            if (env('APP_CLIENT_ID') === $client_id && env('APP_SECRET') === $client_secret) {
                 Log::debug('Called POST authorize response ', [
                     "account_id" => env('APP_KEY'),
                     "account_name" => env('APP_NAME'),
