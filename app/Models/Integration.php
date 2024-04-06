@@ -13,7 +13,7 @@ class Integration extends Model
      * @var string[]
      */
     protected $fillable = [
-        'user_id', 'telegram_id',
+        'form_id', 'token', 'enabled'
     ];
 
     /**
