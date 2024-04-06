@@ -54,6 +54,8 @@ class PyrusController extends Controller
         Log::debug('Called integrationAuth', [$request->get('state')]);
 
         $state = $request->get('state');
+        Log::debug('Called integrationAuth state', [$state]);
+        Log::debug('Called integrationAuth state.formId', [$state['formId']]);
         $formId = $state['formId'] ?? null;
         if ($formId) {
             $integration = Integration::where('form_id', $formId)->firstOr(fn () => Integration::create(['form_id' => $formId]));
