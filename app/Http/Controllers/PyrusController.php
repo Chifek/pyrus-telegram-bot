@@ -84,6 +84,12 @@ class PyrusController extends Controller
     {
         Log::debug('Called POST authorize', $request->post());
         $token = $request->post('token');
+        Log::debug('Called POST authorize token ', $token);
+        $token = $request->input('token');
+        Log::debug('Called POST authorize token2 ', $token);
+        $token = $request->json('token');
+        Log::debug('Called POST authorize token3 ', $token);
+
         $integration = Integration::where('token', $token)->firstOrFail();
         if ($integration) {
             $client_id = $request->post('client_id');
