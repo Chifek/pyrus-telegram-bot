@@ -53,7 +53,7 @@ class PyrusController extends Controller
     {
         Log::debug('Called integrationAuth', [$request->get('state')]);
 
-        $state = $request->get('state');
+        $state = $request->json()->get('state');
         Log::debug('Called integrationAuth state', [$state]);
         Log::debug('Called integrationAuth state.formId', [$state['formId']]);
         $formId = $state['formId'] ?? null;
