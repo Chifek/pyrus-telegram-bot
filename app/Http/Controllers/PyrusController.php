@@ -84,17 +84,15 @@ class PyrusController extends Controller
     {
         Log::debug('Called POST authorize', $request->post());
         $token = $request->post('authorization_code');
-        Log::debug('Called POST authorize token ', [$token]);
-        $token = $request->input('authorization_code');
-        Log::debug('Called POST authorize token2 ', [$token]);
-        $token = $request->json()->get('authorization_code');
-        Log::debug('Called POST authorize token3 ', [$token]);
 
         $integration = Integration::where('token', $token)->firstOrFail();
         if ($integration) {
             $client_id = $request->post('client_id');
             $client_secret = $request->post('client_secret');
-            Log::debug('Called POST authorize found ', [$client_id, $client_secret]);
+            Log::debug('Called POST authorize found ', [
+                $client_id, $client_secret,
+                env('APP_KEY'), env('APP_SECRET')
+            ]);
 
             if (env('APP_KEY') === $client_id && env('APP_SECRET') === $client_secret) {
                 Log::debug('Called POST authorize response ', [
