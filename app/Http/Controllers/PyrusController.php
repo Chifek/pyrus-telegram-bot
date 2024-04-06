@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Integration;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -40,7 +41,6 @@ class PyrusController extends Controller
         } catch (TelegramException $e) {
         }
 
-
         // todo send message to telegram bot
         // $request->post('event');
         // $request->post('access_token');
@@ -52,14 +52,14 @@ class PyrusController extends Controller
     public function integrationAuth(Request $request): RedirectResponse|Redirector
     {
         $state = $request->get('state');
-        $token = Crypt::encrypt(Crypt::generateKey('AES-128-CBC') . $state);
+        $formId = $state['formId'] ?? null;
+        if ($formId) {
+            $integration = Integration::where('form_id', $formId)->firstOr(fn () => Integration::create(['form_id' => $formId]));
 
-        Log::error('integration authorize ' . $state);
-        Log::error('integration authorize token ' . $token);
-
-        // todo save token
-
-        return redirect("https://pyrus.com/integrations/oauthorization?state={$state}&code={$token}");
+            $token = $integration->getToken();
+            return redirect("https://pyrus.com/integrations/oauthorization?state={$state}&code={$token}");
+        }
+        return abort(403);
     }
 
     // callback pyrus methods:
@@ -71,20 +71,25 @@ class PyrusController extends Controller
     }
 
     // POST authorize
-    public function authorizeConfirm(Request $request): JsonResponse
+    public function authorizeConfirm(Request $request): JsonResponse|Response
     {
         Log::debug('Called POST authorize', $request->post());
+        $token = $request->post('token');
+        $integration = Integration::where('token', $token)->firstOrFail();
+        if ($integration) {
+            $client_id = $request->post('client_id');
+            $client_secret = $request->post('client_secret');
 
-        // todo get token
-        $token = Crypt::encrypt(Crypt::generateKey('AES-128-CBC'));
-        $refresh_token = Crypt::encrypt(Crypt::generateKey('AES-128-CBC'));
-
-        return response()->json([
-            "account_id" => env('APP_KEY'),
-            "account_name" => env('APP_NAME'),
-            "access_token" => $token,
-            "refresh_token" => $refresh_token // todo return refresh token
-        ]);
+            if (env('APP_KEY') === $client_id && env('APP_SECRET') === $client_secret) {
+                return response()->json([
+                    "account_id" => env('APP_KEY'),
+                    "account_name" => env('APP_NAME'),
+                    "access_token" => $token,
+                    "refresh_token" => $token // todo return refresh token
+                ]);
+            }
+        }
+        return abort(403);
     }
 
     // GET getavailablenumbers
