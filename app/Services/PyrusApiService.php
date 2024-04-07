@@ -72,8 +72,8 @@ class PyrusApiService
         ]);
 
         $data = [
-//            'account_id' => (string)$telegramId,
-            'account_id' => 'uniqueID12345',
+            'account_id' => (string)$telegramId,
+//            'account_id' => 'uniqueID12345',
             'text' => $text,
             'mappings' => [
                 [
