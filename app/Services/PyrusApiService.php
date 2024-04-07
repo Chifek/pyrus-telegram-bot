@@ -4,7 +4,7 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Cache;
 
 class PyrusApiService
 {
@@ -27,7 +27,7 @@ class PyrusApiService
     public function token(): string
     {
         Log::debug('Request token');
-        $token = app('redis')->get('token');
+        $token = Cache::get('token');
         if ($token) {
             Log::debug('Return saved token', ['token' => $token]);
             return $token;
@@ -41,7 +41,7 @@ class PyrusApiService
         Log::debug('Return new token, response ', [$response->json()]);
         $token = $response->json('access_token');
         Log::debug('Return new token', [$token]);
-        app('redis')->set('token', $token);
+        Cache::set('token', $token);
 
         return $token;
     }
@@ -110,7 +110,7 @@ class PyrusApiService
         Log::debug('response /task json ', ['json' => $response->json()]);
         if ($response->json('error')) {
             Log::debug('Removed token');
-            app('redis')->forget('token');
+            Cache::delete('token');
         }
 
         return $response->json();
