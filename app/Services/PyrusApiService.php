@@ -37,7 +37,7 @@ class PyrusApiService
         ]);
 
         $this->token = $response->json('access_token');
-        Log::debug('Return new token', ['token' => $this->token]);
+        Log::debug('Return new token', ['token' => var_export($this->token, true)]);
 
         return $this->token;
     }
