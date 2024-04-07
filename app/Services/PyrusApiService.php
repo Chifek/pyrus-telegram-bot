@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 
 class PyrusApiService
 {
@@ -26,9 +27,10 @@ class PyrusApiService
     public function token(): string
     {
         Log::debug('Request token');
-        if ($this->token) {
-            Log::debug('Return saved token', ['token' => $this->token]);
-            return $this->token;
+        $token = Redis::get('token');
+        if ($token) {
+            Log::debug('Return saved token', ['token' => $token]);
+            return $token;
         }
 
         $response = Http::post($this->baseUrl . '/token', [
@@ -36,10 +38,11 @@ class PyrusApiService
             'secret' => $this->secret,
         ]);
 
-        $this->token = $response->json('access_token');
         Log::debug('Return new token', ['token' => $response->json()]);
+        $token = $response->json('access_token');
+        Redis::set('token', $token);
 
-        return $this->token;
+        return $token;
     }
 
     /**
