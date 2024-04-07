@@ -104,7 +104,9 @@ class PyrusApiService
         ];
         Log::debug('Call Pyrus task data', $data);
 
-        $response = Http::withToken($this->token())->post($this->baseUrl . '/task', $data);
+        $token = $this->token();
+        Log::debug('response /task, use token ', [$token]);
+        $response = Http::withToken($token)->post($this->baseUrl . '/task', $data);
 
         Log::debug('response /task status ', ['status' => $response->status()]);
         Log::debug('response /task json ', ['json' => $response->json()]);
