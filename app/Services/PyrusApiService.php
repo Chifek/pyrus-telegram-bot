@@ -27,7 +27,7 @@ class PyrusApiService
     public function token(): string
     {
         Log::debug('Request token');
-        $token = Redis::get('token');
+        $token = app('redis')->get('token');
         if ($token) {
             Log::debug('Return saved token', ['token' => $token]);
             return $token;
@@ -40,7 +40,7 @@ class PyrusApiService
 
         Log::debug('Return new token', ['token' => $response->json()]);
         $token = $response->json('access_token');
-        Redis::set('token', $token);
+        app('redis')->set('token', $token);
 
         return $token;
     }
