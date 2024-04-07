@@ -32,8 +32,8 @@ class PyrusApiService
         }
 
         $response = Http::post($this->baseUrl . '/token', [
-            'client_id' => env('APP_CLIENT_ID'),//$this->clientId,
-            'secret' => env('APP_SECRET'),//$this->secret,
+            'client_id' => $this->clientId,
+            'secret' => $this->secret,
         ]);
 
         $this->token = $response->json('access_token');
