@@ -38,9 +38,9 @@ class PyrusApiService
             'secret' => $this->secret,
         ]);
 
-        Log::debug('Return new token, response ', ['token' => $response->json()]);
-        $token = $response->json('token.access_token');
-        Log::debug('Return new token', ['token' => $token]);
+        Log::debug('Return new token, response ', [$response->json()]);
+        $token = $response->json('access_token');
+        Log::debug('Return new token', [$token]);
         app('redis')->set('token', $token);
 
         return $token;
@@ -108,6 +108,10 @@ class PyrusApiService
 
         Log::debug('response /task status ', ['status' => $response->status()]);
         Log::debug('response /task json ', ['json' => $response->json()]);
+        if ($response->json('error')) {
+            Log::debug('Removed token');
+            app('redis')->forget('token');
+        }
 
         return $response->json();
     }
