@@ -24,7 +24,7 @@ class PyrusApiService
             return $token;
         }
 
-        $response = Http::post($this->baseUrlExt . '/auth', [
+        $response = Http::post($this->baseUrlApi . '/auth', [
             'login' => $this->clientId,
             'security_key' => $this->secret,
         ]);
