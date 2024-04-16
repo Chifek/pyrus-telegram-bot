@@ -29,7 +29,7 @@ class PyrusApiService
             'security_key' => $this->secret,
         ]);
 
-        Log::debug('Return new api token, response ', [$response->json()]);
+        Log::debug('Return new api token, response ', ['status' => $response->status(), 'json' => $response->json()]);
         $token = $response->json('access_token');
         Log::debug('Return new api token', [$token]);
         Cache::set('tokenApi', $token);
