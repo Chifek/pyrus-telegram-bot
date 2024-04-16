@@ -128,6 +128,9 @@ class PyrusApiService
         Log::debug('response /task status ', ['status' => $response->status()]);
         Log::debug('response /task json ', ['json' => $response->json()]);
         if (!$response->json('error')) {
+            Log::debug('response /task success');
+            Log::debug('response /task success', ['response' => $response->json('tasks')]);
+
             Log::debug('task_id saved for client ', ['client_id' => $client->id, 'task_id' => $response->json('tasks')[0]]);
             Log::debug('task_id saved for client ', ['client_id' => $client->id, 'task_id' => $response->json('tasks[0]')]);
             Log::debug('task_id saved for client ', ['client_id' => $client->id, 'task_id' => $response->json('tasks.0')]);
