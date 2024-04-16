@@ -12,7 +12,8 @@ class PyrusApiService
     private string $clientId = 'ext@44a2e482-9b57-4a32-8f7b-c3dfab25409c';
     private string $secret = 'Y96eCzDttuRXE7DLMBQxeGkKxmQi1ipbphZelIM4yw9-4lxB8zHSN1fdMVoI-flyWEuCD3Cm9fQQjFvMLLX64nYyfy~UwmWs';
     private string $baseUrlExt = 'https://extensions.pyrus.com/v1';
-    private string $baseUrlApi = 'https://accounts.pyrus.com/api/v4';
+    private string $baseUrlAccounts = 'https://accounts.pyrus.com/api/v4';
+    private string $baseUrlApi = 'https://api.pyrus.com/v4';
     private ?string $token = null;
 
     public function tokenApi(): string
@@ -24,7 +25,7 @@ class PyrusApiService
             return $token;
         }
 
-        $response = Http::post($this->baseUrlApi . '/auth', [
+        $response = Http::post($this->baseUrlAccounts . '/auth', [
             'login' => '2135533@mail.ru',
             'security_key' => 'bMIGYrJr3rwOyfyXg1ar1G-vifq7n4smzoENefJmLQRSTxe4h298AyMF727Y8pU1N~U4nwFp6hXTpaIlhECrT1OMGqXPZe1X',
         ]);
@@ -140,11 +141,11 @@ class PyrusApiService
         Log::debug('response /task, use token ', [$token]);
 
         if ($client->task_id) {
-            $response = Http::withToken($tokenApi)->post($this->baseUrlApi . "/integrations/addcomment", [
-                'account_id' => env('APP_ACCOUNT_ID'),
-                'task_id' => $client->id,
-                'comment_text' => $text,
-                'mappings' => $data['mappings']
+            $response = Http::withToken($tokenApi)->post($this->baseUrlApi . "/tasks/{$client->task_id}/comments", [
+//                'account_id' => env('APP_ACCOUNT_ID'),
+//                'task_id' => $client->id,
+                'text' => $text,
+//                'mappings' => $data['mappings']
             ]);
 
             Log::debug("response /comments status", [
