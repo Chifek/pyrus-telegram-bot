@@ -108,7 +108,6 @@ class PyrusApiService
         ]);
 
         $data = [
-//            'account_id' => (string)$telegramId,
             'account_id' => env('APP_ACCOUNT_ID'),
             'text' => $text,
             'mappings' => [
@@ -145,7 +144,8 @@ class PyrusApiService
                 'account_id' => env('APP_ACCOUNT_ID'),
                 'task_id' => $client->task_id,
                 'comment_text' => $text,
-                'mappings' => $data['mappings']
+                'text' => $text,
+//                'mappings' => $data['mappings']
             ];
             $response = Http::withToken($tokenApi)->post($this->baseUrlApi . "/integrations/addcomment", $commentData);
 
