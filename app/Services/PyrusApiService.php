@@ -75,7 +75,8 @@ class PyrusApiService
             $client = Client::firstOrCreate([
                 'telegram_id' => $telegramId
             ], [
-                'chat_id' => $telegramId
+                'chat_id' => $telegramId,
+                'user_id' => $telegramId,
             ]);
         } catch (\Exception $e) {
             Log::debug('Create client exception: ' . $e->getMessage());
