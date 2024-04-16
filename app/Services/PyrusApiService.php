@@ -25,8 +25,8 @@ class PyrusApiService
         }
 
         $response = Http::post($this->baseUrlApi . '/auth', [
-            'login' => $this->clientId,
-            'security_key' => $this->secret,
+            'login' => '2135533@mail.ru',
+            'security_key' => 'bMIGYrJr3rwOyfyXg1ar1G-vifq7n4smzoENefJmLQRSTxe4h298AyMF727Y8pU1N~U4nwFp6hXTpaIlhECrT1OMGqXPZe1X',
         ]);
 
         Log::debug('Return new api token, response ', ['status' => $response->status(), 'json' => $response->json()]);
