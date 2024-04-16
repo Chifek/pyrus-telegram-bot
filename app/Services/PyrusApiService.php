@@ -12,7 +12,7 @@ class PyrusApiService
     private string $clientId = 'ext@44a2e482-9b57-4a32-8f7b-c3dfab25409c';
     private string $secret = 'Y96eCzDttuRXE7DLMBQxeGkKxmQi1ipbphZelIM4yw9-4lxB8zHSN1fdMVoI-flyWEuCD3Cm9fQQjFvMLLX64nYyfy~UwmWs';
     private string $baseUrlExt = 'https://extensions.pyrus.com/v1';
-    private string $baseUrlApi = 'https://api.pyrus.com/v4';
+    private string $baseUrlApi = 'https://accounts.pyrus.com/api/v4';
     private ?string $token = null;
 
     public function tokenApi(): string
