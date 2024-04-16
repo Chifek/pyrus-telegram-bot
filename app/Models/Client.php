@@ -12,7 +12,7 @@ class Client extends Model
      * @var string[]
      */
     protected $fillable = [
-        'user_id', 'telegram_id',
+        'user_id', 'telegram_id', 'chat_id', 'task_id'
     ];
 
     /**
