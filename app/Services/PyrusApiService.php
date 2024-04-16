@@ -11,7 +11,8 @@ class PyrusApiService
 {
     private string $clientId = 'ext@44a2e482-9b57-4a32-8f7b-c3dfab25409c';
     private string $secret = 'Y96eCzDttuRXE7DLMBQxeGkKxmQi1ipbphZelIM4yw9-4lxB8zHSN1fdMVoI-flyWEuCD3Cm9fQQjFvMLLX64nYyfy~UwmWs';
-    private string $baseUrl = 'https://extensions.pyrus.com/v1';
+    private string $baseUrlExt = 'https://extensions.pyrus.com/v1';
+    private string $baseUrlApi = 'https://api.pyrus.com/v4';
     private ?string $token = null;
 
     public function __construct()
@@ -34,7 +35,7 @@ class PyrusApiService
             return $token;
         }
 
-        $response = Http::post($this->baseUrl . '/token', [
+        $response = Http::post($this->baseUrlExt . '/token', [
             'client_id' => $this->clientId,
             'secret' => $this->secret,
         ]);
@@ -122,18 +123,21 @@ class PyrusApiService
         Log::debug('response /task, use token ', [$token]);
 
         if ($client->task_id) {
-            $response = Http::withToken($token)->post($this->baseUrl . "/tasks/{$client->task_id}/comments", [
-                'text' => $text
+            $response = Http::withToken($token)->post($this->baseUrlApi . "/integrations/addcomment", [
+                'account_id' => env('APP_ACCOUNT_ID'),
+                'task_id' => $client->id,
+                'comment_text' => $text,
+                'mappings' => $data['mappings']
             ]);
 
-            Log::debug("response /tasks/{$client->id}/comments status", [
-                'url' => "/tasks/{$client->task_id}/comments",
+            Log::debug("response /comments status", [
+                'url' => $this->baseUrlApi . "/integrations/addcomment",
                 'status' => $response->status(),
                 'body' => $response->body()
             ]);
 
         } else {
-            $response = Http::withToken($token)->post($this->baseUrl . '/task', $data);
+            $response = Http::withToken($token)->post($this->baseUrlExt . '/task', $data);
 
             Log::debug('task_id saved for client ', ['client_id' => $client->id, 'task_id' => $response->json('task_ids.0')]);
             try {
