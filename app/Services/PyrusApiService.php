@@ -15,10 +15,26 @@ class PyrusApiService
     private string $baseUrlApi = 'https://api.pyrus.com/v4';
     private ?string $token = null;
 
-    public function __construct()
+    public function tokenApi(): string
     {
-        //ClientID: ext@44a2e482-9b57-4a32-8f7b-c3dfab25409c
-        //Secret: Cz1jkMwhYnGjJIgaoDkNiwJh-JgBxPJDvWqwimeBXnL6Z5pjRBCkEsd2~eiQhL6aNUD2iLDp9PsJOHSaUUwKcMaYwdmV2BIC
+        Log::debug('Request api token');
+        $token = Cache::get('tokenApi');
+        if ($token) {
+            Log::debug('Return saved api token', ['token' => $token]);
+            return $token;
+        }
+
+        $response = Http::post($this->baseUrlExt . '/auth', [
+            'login' => $this->clientId,
+            'security_key' => $this->secret,
+        ]);
+
+        Log::debug('Return new api token, response ', [$response->json()]);
+        $token = $response->json('access_token');
+        Log::debug('Return new api token', [$token]);
+        Cache::set('tokenApi', $token);
+
+        return $token;
     }
 
     /**
@@ -120,10 +136,11 @@ class PyrusApiService
         Log::debug('Call Pyrus task data', $data);
 
         $token = $this->token();
+        $tokenApi = $this->tokenApi();
         Log::debug('response /task, use token ', [$token]);
 
         if ($client->task_id) {
-            $response = Http::withToken($token)->post($this->baseUrlApi . "/integrations/addcomment", [
+            $response = Http::withToken($tokenApi)->post($this->baseUrlApi . "/integrations/addcomment", [
                 'account_id' => env('APP_ACCOUNT_ID'),
                 'task_id' => $client->id,
                 'comment_text' => $text,
