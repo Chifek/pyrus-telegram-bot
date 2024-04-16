@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('clients', function (Blueprint $table) {
+            $table->unsignedInteger('task_id')->nullable()->default(null);
             $table->timestamp('created_at')->useCurrent()->change();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->change();
         });
