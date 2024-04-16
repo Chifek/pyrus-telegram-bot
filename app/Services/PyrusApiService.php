@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Client;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
@@ -69,10 +70,18 @@ class PyrusApiService
 
     public function task(int $telegramId, string $text, string $username): ?array
     {
+        // $client - telegram user
+        $client = Client::firstOrCreate([
+            'telegram_id' => $telegramId
+        ], [
+            'chat_id' => $telegramId
+        ]);
+
         Log::debug('Call Pyrus task', [
             'telegramId' => $telegramId,
             'text' => $text,
             'username' => $username,
+            'client_id' => $client->id
         ]);
 
         $data = [
@@ -106,11 +115,20 @@ class PyrusApiService
 
         $token = $this->token();
         Log::debug('response /task, use token ', [$token]);
+
+        // todo search exists opened task, if exists add comment to
+
         $response = Http::withToken($token)->post($this->baseUrl . '/task', $data);
 
         Log::debug('response /task status ', ['status' => $response->status()]);
         Log::debug('response /task json ', ['json' => $response->json()]);
-        if ($response->json('error')) {
+        if (!$response->json('error')) {
+            Log::debug('task_id saved for client ', ['client_id' => $client->id, 'task_id' => $response->json('tasks')[0]]);
+            Log::debug('task_id saved for client ', ['client_id' => $client->id, 'task_id' => $response->json('tasks[0]')]);
+            Log::debug('task_id saved for client ', ['client_id' => $client->id, 'task_id' => $response->json('tasks.0')]);
+            $client->task_id = $response->json('tasks')[0];
+            $client->save();
+        } else {
             Log::debug('Removed token');
             Cache::delete('token');
         }
