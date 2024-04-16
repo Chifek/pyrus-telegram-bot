@@ -147,6 +147,7 @@ class PyrusApiService
                 'text' => $text,
                 'mappings' => $data['mappings']
             ];
+            Log::debug('Call Pyrus comment data', $commentData);
             $response = Http::withToken($tokenApi)->post($this->baseUrlApi . "/integrations/addcomment", $commentData);
 
             Log::debug("response /comments status", [
