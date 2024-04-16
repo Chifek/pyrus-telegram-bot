@@ -141,11 +141,11 @@ class PyrusApiService
         Log::debug('response /task, use token ', [$token]);
 
         if ($client->task_id) {
-            $response = Http::withToken($tokenApi)->post($this->baseUrlApi . "/tasks/{$client->task_id}/comments", [
-//                'account_id' => env('APP_ACCOUNT_ID'),
-//                'task_id' => $client->id,
-                'text' => $text,
-//                'mappings' => $data['mappings']
+            $response = Http::withToken($tokenApi)->post($this->baseUrlApi . "/integrations/addcomment", [
+                'account_id' => env('APP_ACCOUNT_ID'),
+                'task_id' => $client->id,
+                'comment_text' => $text,
+                'mappings' => $data['mappings']
             ]);
 
             Log::debug("response /comments status", [
