@@ -121,19 +121,17 @@ class PyrusApiService
         $token = $this->token();
         Log::debug('response /task, use token ', [$token]);
 
-        // todo search exists opened task, if exists add comment to
-        // todo есть ли смысл проверять тут статус или лучше по хуку удалять поле task_id
-//        if ($client->task_id) {
-//            $taskResponse = Http::withToken($token)->get($this->baseUrl . '/tasks/'. $client->task_id, $data);
-//            if ($taskResponse->successful() && $taskResponse->json('task.id')) {
-//
-//            }
-//        }
-
         if ($client->task_id) {
             $response = Http::withToken($token)->post($this->baseUrl . "/tasks/{$client->task_id}/comments", [
                 'text' => $text
             ]);
+
+            Log::debug("response /tasks/{$client->id}/comments status", [
+                'url' => "/tasks/{$client->task_id}/comments",
+                'status' => $response->status(),
+                'body' => $response->body()
+            ]);
+
         } else {
             $response = Http::withToken($token)->post($this->baseUrl . '/task', $data);
 
