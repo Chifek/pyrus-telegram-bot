@@ -130,28 +130,25 @@ class PyrusApiService
 //            }
 //        }
 
-        $response = null;
         if ($client->task_id) {
             $response = Http::withToken($token)->post($this->baseUrl . "/tasks/{$client->task_id}/comments", [
                 'text' => $text
             ]);
         } else {
             $response = Http::withToken($token)->post($this->baseUrl . '/task', $data);
-        }
 
-        Log::debug('response /task status ', ['status' => $response->status()]);
-        Log::debug('response /task json ', ['json' => $response->json()]);
-        if (!$response->json('error')) {
             Log::debug('task_id saved for client ', ['client_id' => $client->id, 'task_id' => $response->json('task_ids.0')]);
-
             try {
                 $client->task_id = $response->json('task_ids.0');
                 $client->save();
             } catch (\Exception $e) {
                 Log::debug('Create client exception: ' . $e->getMessage());
             }
+        }
 
-        } else {
+        Log::debug('response /task status ', ['status' => $response->status()]);
+        Log::debug('response /task json ', ['json' => $response->json()]);
+        if ($response->json('error')) {
             Log::debug('Removed token');
             Cache::delete('token');
         }
