@@ -71,11 +71,15 @@ class PyrusApiService
     public function task(int $telegramId, string $text, string $username): ?array
     {
         // $client - telegram user
-        $client = Client::firstOrCreate([
-            'telegram_id' => $telegramId
-        ], [
-            'chat_id' => $telegramId
-        ]);
+        try {
+            $client = Client::firstOrCreate([
+                'telegram_id' => $telegramId
+            ], [
+                'chat_id' => $telegramId
+            ]);
+        } catch (\Exception $e) {
+            Log::debug('Create client exception: ' . $e->getMessage());
+        }
 
         Log::debug('Call Pyrus task', [
             'telegramId' => $telegramId,
