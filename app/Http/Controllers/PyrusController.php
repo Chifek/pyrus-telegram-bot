@@ -91,7 +91,7 @@ class PyrusController extends Controller
             $client_secret = $request->post('client_secret');
             if (env('APP_CLIENT_ID') === $client_id && env('APP_SECRET') === $client_secret) {
                 return response()->json([
-                    "account_id" => $integration->id,
+                    "account_id" => env('APP_ACCOUNT_ID'),
                     "account_name" => env('APP_NAME'),
                     "access_token" => $token,
                     "refresh_token" => $token // todo return refresh token
