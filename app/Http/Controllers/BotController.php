@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Client;
 use App\Services\PyrusApiService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
+use App\Services\TelegramService;
 use Illuminate\Support\Facades\Log;
 use Longman\TelegramBot\Entities\Update;
 use Longman\TelegramBot\Exception\TelegramException;
@@ -14,45 +12,44 @@ use Longman\TelegramBot\Telegram;
 
 class BotController extends Controller
 {
-    private string $botApiKey = '817087292:AAGCA9jQpZaFGkTedtpM50m9yBjXs-F4hQw'; // todo move to .env
-    private string $botUsername = 'InionBot'; // todo move to .env
     private PyrusApiService $pyrusApiService;
+    private TelegramService $telegramService;
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(PyrusApiService $pyrusApiService)
+    public function __construct(PyrusApiService $pyrusApiService, TelegramService $telegramService)
     {
         $this->pyrusApiService = $pyrusApiService;
-        //
+        $this->telegramService = $telegramService;
     }
 
     public function webhook(): void
     {
         try {
-            $telegram = new Telegram($this->botApiKey, $this->botUsername);
 
-            $telegram->setUpdateFilter(function (Update $update, Telegram $telegram, &$reason = 'Update denied by update_filter') {
+            $this->telegramService->setUpdateFilter(function (Update $update, Telegram $telegram, &$reason = 'Update denied by update_filter') {
                 $user = $update->getMessage()->getFrom();
                 $name = $user->getFirstName() . ' ' . $user->getLastName();
                 $chatId = $user->getId();
                 $text = $update->getMessage()->getText();
+                $phone = '';
 
                 // todo check if the opened task already exist
-                $this->pyrusApiService->task($chatId, $text, $name);
+                $id = $this->pyrusApiService->task($chatId, $text, $name, $phone);
 
                 Log::debug('Telegram Webhook: ' . $chatId . ' / '. $text);
 
                 RequestTelegram::sendMessage([
                     'chat_id' => $chatId,
-                    'text' => "Ваш запрос принят, номер задачи: 123. Ожидайте ответа",
+                    'text' => "Ваш запрос принят, номер задачи: {$id}. Ожидайте ответа",
                 ]);
 
                 return true;
             });
 
-            $telegram->handle();
+            $this->telegramService->handle();
         } catch (TelegramException $e) {
             Log::error('telegram error ' . $e->getMessage());
         }

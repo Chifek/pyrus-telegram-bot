@@ -86,19 +86,15 @@ class PyrusApiService
 
     }
 
-    public function task(int $telegramId, string $text, string $username): ?array
+    public function task(int $telegramId, string $text, string $username, ?string $phone = null): ?array
     {
         // $client - telegram user
-        try {
-            $client = Client::firstOrCreate([
-                'telegram_id' => $telegramId
-            ], [
-                'chat_id' => $telegramId,
-                'user_id' => $telegramId,
-            ]);
-        } catch (\Exception $e) {
-            Log::debug('Create client exception: ' . $e->getMessage());
-        }
+        $client = Client::firstOrCreate([
+            'telegram_id' => $telegramId
+        ], [
+            'chat_id' => $telegramId,
+            'user_id' => $telegramId,
+        ]);
 
         Log::debug('Call Pyrus task', [
             'telegramId' => $telegramId,
@@ -111,6 +107,10 @@ class PyrusApiService
             'account_id' => env('APP_ACCOUNT_ID'),
             'text' => $text,
             'mappings' => [
+                [
+                    'code' => 'PhoneNumberFrom',
+                    'value' => $phone,
+                ],
                 [
                     'code' => 'SenderName',
                     'value' => $username,
@@ -175,6 +175,6 @@ class PyrusApiService
             Cache::delete('token');
         }
 
-        return $response->json();
+        return $client->task_id;
     }
 }
