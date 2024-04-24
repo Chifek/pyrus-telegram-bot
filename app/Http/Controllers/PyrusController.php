@@ -82,11 +82,9 @@ class PyrusController extends Controller
     {
         Log::debug('Called GET toggle', $request->post());
 
-        $account_id = $request->post('account_id');
         $access_token = $request->post('access_token');
 
-        Integration::where('id', $account_id)
-            ->where('token', $access_token)
+        Integration::where('token', $access_token)
             ->update(['enabled' => $request->post('enabled', false)]);
     }
 
