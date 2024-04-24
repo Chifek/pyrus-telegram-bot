@@ -86,7 +86,7 @@ class PyrusApiService
 
     }
 
-    public function task(int $telegramId, string $text, string $username, ?string $phone = null): ?array
+    public function task(int $telegramId, string $text, string $username, ?string $phone = null): int
     {
         // $client - telegram user
         $client = Client::firstOrCreate([
@@ -175,6 +175,6 @@ class PyrusApiService
             Cache::delete('token');
         }
 
-        return $client->task_id;
+        return (int) $client->task_id;
     }
 }
